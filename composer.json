@@ -1,0 +1,19 @@
+{
+  "name": "snappmarket/delivery-communicator",
+  "authors": [
+    {
+      "name": "Fatemeh Majd",
+      "email": "fmmajd452@gmail.com"
+    }
+  ],
+  "require": {
+    "snappmarket/php-rest-communicator": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "SnappMarket\\": "src/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": false
+}
