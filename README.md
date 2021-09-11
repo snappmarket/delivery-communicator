@@ -1,0 +1,1 @@
+## SnappMarket Delivery Communicator
