@@ -5,6 +5,7 @@ namespace SnappMarket\Delivery;
 use Exception;
 use Psr\Log\LoggerInterface;
 use SnappMarket\Communicator\Communicator as BaseCommunicator;
+use SnappMarket\Delivery\DTO\CancelDeliveryDTO;
 use SnappMarket\Delivery\DTO\UpdateStatusDTO;
 
 class Communicator extends BaseCommunicator
@@ -35,7 +36,25 @@ class Communicator extends BaseCommunicator
         ]);
 
         if ($response->getStatusCode() == 400) {
-            $data = json_decode($response->getBody()->__toString(), true);
+            $data = json_decode($response->getBody()->getContents(), true);
+            $message = $data['error']['message'] ?? 'GENERIC ERROR';
+            throw new Exception($message);
+        } else if ($response->getStatusCode() != 200) {
+            throw new Exception('COULD NOT CONNECT TO SERVER');
+        }
+
+        return true;
+    }
+
+    public function cancelDelivery(CancelDeliveryDTO $cancelDeliveryDTO): bool
+    {
+        $orderId = $cancelDeliveryDTO->getOrderId();
+        $uri = "/orders/$orderId/cancel";
+
+        $response = $this->request(static::METHOD_PUT, $uri, []);
+
+        if ($response->getStatusCode() == 400) {
+            $data = json_decode($response->getBody()->getContents(), true);
             $message = $data['error']['message'] ?? 'GENERIC ERROR';
             throw new Exception($message);
         } else if ($response->getStatusCode() != 200) {
